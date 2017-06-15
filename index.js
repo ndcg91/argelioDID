@@ -28,13 +28,16 @@ app.use('/', routes);
 
 
 app.listen(3000, function () {
-  console.log('clin app listening on port 3000!');
+  console.log('app listening on port 3000!');
   ari.connect('http://localhost:8088', 'ndcg9105', 'Melany90', clientLoaded);
 
 });
 
+var playback;
 
 var clientLoaded = (err,client) => {
+  playback = client.Playback();
+
   if (err) {
     throw err;
   }
@@ -64,7 +67,6 @@ var stasisStart = (event, channel) => {
     console.log(util.format('%s: %s', key, JSON.stringify(channel[key])));
   });
 
-  var playback = client.Playback();
   channel.play({media: 'sound:lots-o-monkeys'},
                 playback, function(err, newPlayback) {
     if (err) {
