@@ -56,7 +56,7 @@ var clientLoaded = (err,client) => {
   client.on('StasisEnd', stasisEnd);
   client.start('did-api');
 
-  func stasisStart(event, channel) {
+  function stasisStart(event, channel) {
     console.log(util.format(
         'Channel %s has entered the application', channel.name));
 
