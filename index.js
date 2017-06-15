@@ -78,7 +78,7 @@ var stasisStart = (event, channel) => {
     console.log(util.format(
       'Monkeys successfully vanquished %s; hanging them up',
       channel.name));
-      console.log(completedPlayback)
+      console.log(event)
     if (channel != null){
       channel.hangup(function(err) {
         if (err) {
