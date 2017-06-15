@@ -1,5 +1,5 @@
 {
-  "name": "node",
+  "name": "clin-backend",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -9,7 +9,18 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "ari-client": "^1.1.1",
-    "mongoose": "^4.10.6"
+    "bcrypt": "^1.0.2",
+    "body-parser": "^1.17.2",
+    "express": "^4.15.3",
+    "express-handlebars": "^3.0.0",
+    "jsonwebtoken": "^7.4.1",
+    "jwt-simple": "^0.5.1",
+    "moments": "0.0.2",
+    "mongoose": "^4.10.4",
+    "morgan": "^1.8.2",
+    "nodemailer": "^4.0.1",
+    "passport": "^0.3.2",
+    "passport-jwt": "^2.2.1",
+    "ari-client":"*"
   }
 }
