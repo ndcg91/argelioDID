@@ -43,7 +43,6 @@ var clientLoaded = (err,client) => {
   }
   client.on('StasisStart', stasisStart);
   client.on('StasisEnd', stasisEnd);
-  client.on('ChannelStateChange', function(channel,event){console.log(event)})
 
   client.start('did-api');
 
@@ -79,6 +78,7 @@ var stasisStart = (event, channel) => {
     console.log(util.format(
       'Monkeys successfully vanquished %s; hanging them up',
       channel.name));
+      console.log(completedPlayback)
     if (channel != null){
       channel.hangup(function(err) {
         if (err) {
