@@ -67,25 +67,23 @@ var stasisStart = (event, channel) => {
     console.log(util.format('%s: %s', key, JSON.stringify(channel[key])));
   });
 
-  channel.play({media: 'sound:lots-o-monkeys'},
-                playback, function(err, newPlayback) {
+  channel.play({media: 'sound:lots-o-monkeys'},playback, function(err, newPlayback) {
     if (err) {
       throw err;
     }
   });
 
-  playback.on('PlaybackFinished', playbackFinished);
-
-  var playbackFinished = function(event, completedPlayback) {
+  playback.on('PlaybackFinished', function(event, completedPlayback) {
     console.log(util.format(
       'Monkeys successfully vanquished %s; hanging them up',
       channel.name));
     channel.hangup(function(err) {
-    if (err) {
-        throw err;
-      }
+      if (err) {
+          throw err;
+        }
     });
-  }
+  });
+
 }
 
 
