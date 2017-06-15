@@ -73,19 +73,21 @@ var stasisStart = (event, channel) => {
       throw err;
     }
   });
+  
   playback.on('PlaybackFinished', playbackFinished);
-}
-
-var playbackFinished = (event, completedPlayback) => {
-  console.log(util.format(
+  var playbackFinished = (event, completedPlayback) => {
+    console.log(util.format(
       'Monkeys successfully vanquished %s; hanging them up',
       channel.name));
-  channel.hangup(function(err) {
+    channel.hangup(function(err) {
     if (err) {
       throw err;
     }
   });
 }
+}
+
+
 
 // handler for StasisEnd event
 var stasisEnd = (event, channel) => {
