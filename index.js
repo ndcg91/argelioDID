@@ -43,7 +43,7 @@ var clientLoaded = (err,client) => {
   }
   client.on('StasisStart', stasisStart);
   client.on('StasisEnd', stasisEnd);
-  client.on_channel_event('ChannelStateChange', function(channel,event){console.log(event)})
+  client.on('ChannelStateChange', function(channel,event){console.log(event)})
 
   client.start('did-api');
 
