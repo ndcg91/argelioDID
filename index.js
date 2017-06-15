@@ -77,11 +77,13 @@ var stasisStart = (event, channel) => {
     console.log(util.format(
       'Monkeys successfully vanquished %s; hanging them up',
       channel.name));
-    channel.hangup(function(err) {
-      if (err) {
-          throw err;
-        }
-    });
+    if (channel){
+      channel.hangup(function(err) {
+        if (err) {
+            throw err;
+          }
+      });
+    }
   });
 
 }
