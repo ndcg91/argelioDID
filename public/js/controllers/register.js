@@ -7,7 +7,7 @@ app.controller('RegisterCtrl', function($scope,$state,$window,$http,$timeout) {
 	}
     $scope.registerSubmit = function(){
     	console.log("register clicked")
-    	if ($scope.password == $scope.passwordConfirm){
+    	if ($scope.password != $scope.passwordConfirm){
     		$scope.authError = true
 			$timeout(function(){$scope.authError = false}, 4000)
     	}
