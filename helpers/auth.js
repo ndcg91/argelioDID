@@ -12,6 +12,7 @@ var params = {
 
 var strategy = new Strategy(params, function(payload, done) {
     let userID = payload.id;
+    console.log("inside")
     Users.findById(userID, '-password -_id', function(err,user){
         if (err || user == null){
             return done(new Error("User not found"), null);

@@ -11,7 +11,7 @@ var userSchema = new Schema({
   registerConfirmed: { type: Boolean, default: false },
   registrationToken: String,
   forgotToken: String,
-  type: { type: String, required: true, enum: ['Admin', 'Almacen', 'Salon', 'Cocina', 'Jefe Sala'] },
+  type: { type: String, required: true, enum: ['Admin', 'Client'] },
   created_at: Date,
   updated_at: Date
 });

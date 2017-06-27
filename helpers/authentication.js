@@ -2,6 +2,7 @@ var Users = require("../models/users.js");
 var jwt = require("jsonwebtoken");  
 var config = require("../config.js");
 var crypto = require("crypto");
+var mailer = require("../mailer")
 
 module.exports = {
 	login: function(req,res){
@@ -33,15 +34,25 @@ module.exports = {
 		let username = req.body.username;
 		let password = req.body.password;
 		let email = req.body.email;
-		let type = req.body.type;
+		let type = req.body.type || "Client"
 
 		if (username && password && email && type){
-			let object = {
+			let newUser  = new Users({
 				username: username,
 				password: password,
 				email: email,
 				type: type,
-			}
+				registrationToken: jwt.sign({message:crypto.randomBytes(64).toString('hex')}, config.jwtSecret, {
+					expiresIn: 3600 // in seconds
+				})
+			})
+			newUser.save(function(err){
+				if (!err) {
+					mailer.sendRegisterMail(newUser.registrationToken, newUser.email)
+					res.send({msg:"registered"})
+				}
+				else { console.log(err);res.status(401).send({error: "auth fail"}) }
+			})
 		}
 		else{
 			res.status(401).send({error: "auth fail"})

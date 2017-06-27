@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "ari-client": "*",
     "bcrypt": "^1.0.2",
     "body-parser": "^1.17.2",
     "express": "^4.15.3",
@@ -20,7 +21,6 @@
     "morgan": "^1.8.2",
     "nodemailer": "^4.0.1",
     "passport": "^0.3.2",
-    "passport-jwt": "^2.2.1",
-    "ari-client": "*"
+    "passport-jwt": "^2.2.1"
   }
 }
