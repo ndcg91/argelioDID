@@ -87,12 +87,12 @@ function clientLoaded (err, client) {
       console.log(util.format(
           'Monkeys successfully vanquished %s; hanging them up',
           channel.name));
-      bridge.play({media: 'sound:lots-o-monkeys'},
-                  playback, function(err, newPlayback) {
-        if (err) {
-          throw err;
-        }
-      });
+        bridge.play({media: 'sound:lots-o-monkeys'},
+                    playback, function(err, newPlayback) {
+          if (err) {
+            throw err;
+          }
+        });
         
     }
   }
@@ -100,6 +100,9 @@ function clientLoaded (err, client) {
   // handler for StasisEnd event
   function stasisEnd(event, channel) {
     playback.stop();
+    bridge.removeChannel(channel,function(err){
+      console.log(err,"leaving channel")
+    })
     console.log(util.format(
           'Channel %s just left our application', channel.name));
   }
