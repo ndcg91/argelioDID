@@ -44,11 +44,12 @@ function clientLoaded (err, client) {
   if (err) {
     throw err;
   }
-  var bridge = null;
- 
  
   // handler for StasisStart event
   function stasisStart(event, channel) {
+    var playback = null;
+    var bridge = null;
+
     console.log(util.format('Monkeys! Attack %s!', channel.name));
     client.bridges.create({type: 'mixing'}, function(err, newBridge) {
       if (err) {
