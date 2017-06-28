@@ -99,7 +99,8 @@ function clientLoaded (err, client) {
  
   // handler for StasisEnd event
   function stasisEnd(event, channel) {
-    playback.stop(function(err){
+    playback.control({operation: 'stop'}, function(err) {
+
         console.log(err)
         bridge.removeChannel(channel,function(err){
           console.log(err,"leaving channel")
