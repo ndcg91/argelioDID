@@ -75,6 +75,7 @@ function clientLoaded (err, client) {
  
   // handler for StasisEnd event
   function stasisEnd(event, channel) {
+    playback.stop()
     console.log(util.format(
           'Channel %s just left our application', channel.name));
   }
