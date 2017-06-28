@@ -58,7 +58,7 @@ function clientLoaded (err, client) {
       bridge = newBridge;
       console.log(util.format('Created bridge %s', bridge.id));
 
-       var playback = client.Playback();
+        playback = client.Playback();
 
         bridge.addChannel({channel: channel.id}, function(err) {
           if (err) {
@@ -82,7 +82,6 @@ function clientLoaded (err, client) {
       console.log(util.format(
           'Monkeys successfully vanquished %s; hanging them up',
           channel.name));
-        console.log(bridge.channels)
         bridge.play({media: 'sound:lots-o-monkeys'},
                     playback, function(err, newPlayback) {
           if (err) {
@@ -102,7 +101,6 @@ function clientLoaded (err, client) {
     //       console.log(err,"leaving channel")
     //     })
     // });
-    console.log(playback)
     console.log(util.format(
           'Channel %s just left our application', channel.name));
   }
