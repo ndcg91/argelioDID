@@ -60,7 +60,7 @@ function clientLoaded (err, client) {
           'Monkeys! Attack %s!', channel.name));
 
     //adding channel to bridge
-    var playback = bridge.Playback();
+    var playback = client.Playback();
 
     bridge.addChannel({channel: channel.id}, function(err) {
       if (err) {
