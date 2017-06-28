@@ -65,7 +65,7 @@ function clientLoaded (err, client) {
             throw err;
           }
           
-          brdige.startMoh(function(err){
+          bridge.startMoh(function(err){
             console.log(err)
           })
           // bridge.play({media: 'sound:lots-o-monkeys'},
