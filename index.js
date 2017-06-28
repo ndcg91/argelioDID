@@ -45,48 +45,43 @@ function clientLoaded (err, client) {
     throw err;
   }
   var bridge = null;
-  var playback = null;
-  client.bridges.create({type: 'mixing'}, function(err, newBridge) {
-    if (err) {
-      throw err;
-    }
-    bridge = newBridge;
-    console.log(util.format('Created bridge %s', bridge.id));
-  });
+ 
  
   // handler for StasisStart event
   function stasisStart(event, channel) {
-    console.log(util.format(
-          'Monkeys! Attack %s!', channel.name));
-
-    //adding channel to bridge
-    playback = client.Playback();
-
-    bridge.addChannel({channel: channel.id}, function(err) {
+    console.log(util.format('Monkeys! Attack %s!', channel.name));
+    client.bridges.create({type: 'mixing'}, function(err, newBridge) {
       if (err) {
         throw err;
       }
- 
-      bridge.play({media: 'sound:lots-o-monkeys'},
-                  playback, function(err, newPlayback) {
-        if (err) {
-          throw err;
-        }
-      });
+      bridge = newBridge;
+      console.log(util.format('Created bridge %s', bridge.id));
+
+       var playback = client.Playback();
+
+        bridge.addChannel({channel: channel.id}, function(err) {
+          if (err) {
+            throw err;
+          }
+   
+          bridge.play({media: 'sound:lots-o-monkeys'},
+                      playback, function(err, newPlayback) {
+            if (err) {
+              throw err;
+            }
+          });
+          playback.on('PlaybackFinished', playbackFinished);
+
+        });
     });
- 
-    // channel.play({media: 'sound:lots-o-monkeys'},
-    //               playback, function(err, newPlayback) {
-    //   if (err) {
-    //     throw err;
-    //   }
-    // });
-    playback.on('PlaybackFinished', playbackFinished);
+
+   
  
     function playbackFinished(event, completedPlayback) {
       console.log(util.format(
           'Monkeys successfully vanquished %s; hanging them up',
           channel.name));
+        console.log(bridge.channels)
         bridge.play({media: 'sound:lots-o-monkeys'},
                     playback, function(err, newPlayback) {
           if (err) {
