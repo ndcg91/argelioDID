@@ -44,26 +44,50 @@ function clientLoaded (err, client) {
   if (err) {
     throw err;
   }
+  var bridge = null;
+  var playback = null;
+  client.bridges.create({type: 'mixing'}, function(err, newBridge) {
+    if (err) {
+      throw err;
+    }
+    bridge = newBridge;
+    console.log(util.format('Created bridge %s', bridge.id));
+  });
  
   // handler for StasisStart event
   function stasisStart(event, channel) {
     console.log(util.format(
           'Monkeys! Attack %s!', channel.name));
- 
-    var playback = client.Playback();
-    channel.play({media: 'sound:lots-o-monkeys'},
-                  playback, function(err, newPlayback) {
+
+    //adding channel to bridge
+    var playback = bridge.Playback();
+
+    bridge.addChannel({channel: channel.id}, function(err) {
       if (err) {
         throw err;
       }
+ 
+      bridge.play({media: 'sound:lots-o-monkeys'},
+                  playback, function(err, newPlayback) {
+        if (err) {
+          throw err;
+        }
+      });
     });
+ 
+    // channel.play({media: 'sound:lots-o-monkeys'},
+    //               playback, function(err, newPlayback) {
+    //   if (err) {
+    //     throw err;
+    //   }
+    // });
     playback.on('PlaybackFinished', playbackFinished);
  
     function playbackFinished(event, completedPlayback) {
       console.log(util.format(
           'Monkeys successfully vanquished %s; hanging them up',
           channel.name));
-      channel.play({media: 'sound:lots-o-monkeys'},
+      bridge.play({media: 'sound:lots-o-monkeys'},
                   playback, function(err, newPlayback) {
         if (err) {
           throw err;
@@ -75,7 +99,6 @@ function clientLoaded (err, client) {
  
   // handler for StasisEnd event
   function stasisEnd(event, channel) {
-    playback.stop()
     console.log(util.format(
           'Channel %s just left our application', channel.name));
   }
