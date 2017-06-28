@@ -64,13 +64,16 @@ function clientLoaded (err, client) {
           if (err) {
             throw err;
           }
-   
-          bridge.play({media: 'sound:lots-o-monkeys'},
-                      playback, function(err, newPlayback) {
-            if (err) {
-              throw err;
-            }
-          });
+          
+          brdige.startMoh(function(err){
+            console.log(err)
+          })
+          // bridge.play({media: 'sound:lots-o-monkeys'},
+          //             playback, function(err, newPlayback) {
+          //   if (err) {
+          //     throw err;
+          //   }
+          // });
           playback.on('PlaybackFinished', playbackFinished);
 
         });
