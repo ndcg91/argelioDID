@@ -82,7 +82,7 @@ function clientLoaded (err, client) {
   client.on('StasisStart', stasisStart);
   client.on('StasisEnd', stasisEnd);
  
-  client.start('channel-playback-monkeys');
+  client.start('did-api');
 }
 
 // var clientLoaded = (err,client) => {
