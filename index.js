@@ -91,8 +91,7 @@ var clientLoaded = (err,client) => {
   
 }
 function stasisEnd(event, channel) {
-  console.log(util.format(
-    'Channel %s has left the application', channel.name));
+  console.log("end")
 }
 
 // handler for StasisStart event
