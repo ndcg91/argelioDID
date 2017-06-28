@@ -88,11 +88,11 @@ var clientLoaded = (err,client) => {
 
   }
 
-  
+  function stasisEnd(event, channel) {
+    console.log("end")
+  }
 }
-function stasisEnd(event, channel) {
-  console.log("end")
-}
+
 
 // handler for StasisStart event
 
