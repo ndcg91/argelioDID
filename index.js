@@ -36,13 +36,8 @@ app.listen(3000, function () {
 
 });
 
-/*jshint node: true*/
-'use strict';
+
  
-var ari = require('ari-client');
-var util = require('util');
- 
-ari.connect('http://localhost:8088', 'asterisk', 'asterisk', clientLoaded);
  
 // handler for client being loaded
 function clientLoaded (err, client) {
