@@ -78,11 +78,12 @@ var clientLoaded = (err,client) => {
       console.log(util.format(
         'Monkeys successfully vanquished %s; hanging them up',
         channel.name));
-        channel.hangup(function(err) {
+        channel.play({media: 'sound:lots-o-monkeys'},playback, function(err, newPlayback) {
           if (err) {
-              console.log(err)
-            }
+            throw err;
+          }
         });
+       
     });
 
   }
