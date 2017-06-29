@@ -39,7 +39,7 @@ function stasisEnd(event, channel) {
 function stasisStart(event, channel) {
     var bridge = null;
 
-    console.log(util.format('Monkeys! Attack %s!', channel));
+    console.log(util.format('Monkeys! Attack %s!', channel.toString()));
     //create bridge , if we dont create the bridte the app breaks when the user hang up
     ariClient.bridges.create({type: 'mixing'}, function(err, newBridge) {
       if (err) {
@@ -60,8 +60,9 @@ function stasisStart(event, channel) {
               channel: channel.name
             })
             call.save(function(err,savedCall){
-            	if (err)
-            		throw err;
+            	if (err) {
+            		console.log(err);
+            	}
             	console.log("saved call", savedCall)
             	//assign the call to a user 
             	//find the document with the number
