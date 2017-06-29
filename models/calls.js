@@ -20,8 +20,7 @@ callSchema.pre("save",function(next){
     this.starTime = currentDate;
 
   if(this.endTime){
-    console.log(this.starTime.getTime() - this.endTime.getTime())
-    this.duration = parseInt(((this.endTime.getTime() - this.starTime.getTime()) / 1000 ).toFixed())
+    this.duration = Math.floor(this.endTime.getTime() - this.starTime.getTime()) / 1000 )
   }
   
   next()
