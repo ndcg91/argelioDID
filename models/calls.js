@@ -20,9 +20,8 @@ callSchema.pre("save",function(next){
     this.starTime = currentDate;
 
   if(this.endTime){
-    let start = new Date(this.starTime);
-    let end = new Date(this.endTime);
-    this.duration = Math.ceil((start.getTime() - end.getTime()) / 1000 )
+
+    this.duration = Math.ceil((this.starTime.getTime() - this.endTime.getTime()) / 1000 )
   }
   
   next()
