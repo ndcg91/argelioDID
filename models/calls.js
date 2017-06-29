@@ -21,7 +21,7 @@ callSchema.pre("save",function(next){
 
   if(this.endTime){
     console.log(this.starTime.getTime() - this.endTime.getTime())
-    this.duration = Math.ceil((this.starTime.getTime() - this.endTime.getTime()) / 1000 )
+    this.duration = parseInt(((this.endTime.getTime() - this.starTime.getTime()) / 1000 ).toFixed())
   }
   
   next()
