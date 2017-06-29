@@ -12,6 +12,7 @@ var userSchema = new Schema({
   registrationToken: String,
   forgotToken: String,
   type: { type: String, required: true, enum: ['Admin', 'Client'] },
+  numbers: [String],
   created_at: Date,
   updated_at: Date
 });
