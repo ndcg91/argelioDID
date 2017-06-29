@@ -1,7 +1,8 @@
 var ari = require('ari-client'),
 	Calls = require('./../models/calls'),
 	Users = require('./../models/users'),
- 	Phones = require('./../models/numbers')
+ 	Phones = require('./../models/numbers'),
+ 	util = require('util');
 
 
 module.exports = {
