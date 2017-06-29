@@ -10,7 +10,7 @@ var routes = require("./routes/index"),
 	logger = require('morgan'),
 	exphbs  = require('express-handlebars'),
 	path = require("path"),
-  ari = require("helpers/ari")
+  ari = require("./helpers/ari")
 
 
 
