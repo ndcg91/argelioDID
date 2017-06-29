@@ -60,6 +60,8 @@ function stasisStart(event, channel) {
               channel: channel.name
             })
             call.save(function(err,savedCall){
+            	if (err)
+            		throw err;
             	//assign the call to a user 
             	//find the document with the number
             	Phones.findOne({number: 123},function(err,number){
