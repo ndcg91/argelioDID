@@ -21,8 +21,7 @@ callSchema.pre("save",function(next){
 
   if(this.endTime){
     let start = new Date(this.starTime);
-    let type = typeof this.starTime
-    console.log(type)
+    console.log(this.starTime)
     let end = new Date(this.endTime);
     this.duration = Math.ceil((start.now() - end.now()) / 1000 )
   }
