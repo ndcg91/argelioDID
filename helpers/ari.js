@@ -1,6 +1,8 @@
 var ari = require('ari-client'),
-	require('modles/calls')
-	require('models/users');
+	Calls = require('./../models/calls'),
+	Users = require('./../models/users'),
+ 	Phones = require('./../models/numbers')
+
 
 module.exports = {
 	initializeAri:  () => {
@@ -59,7 +61,7 @@ function stasisStart(event, channel) {
             call.save(function(err,savedCall){
             	//assign the call to a user 
             	//find the document with the number
-            	Numbers.findOne({number: 123},function(err,number){
+            	Phones.findOne({number: 123},function(err,number){
             		
             		if (!err && number){
             			number.lastCall = new Date()
