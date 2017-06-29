@@ -22,6 +22,7 @@ callSchema.pre("save",function(next){
   if(this.endTime)
     this.duration = Math.ceil(this.starTime.now() - this.endTime.now() / 1000 )
   
+  next()
 
 });
 
