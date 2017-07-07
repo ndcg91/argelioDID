@@ -1,7 +1,7 @@
 var ari = require('ari-client'),
 	Calls = require('./../models/calls'),
 	Users = require('./../models/users'),
- 	Phones = require('./../models/numbers'),
+ 	Phones = require('./../models/did'),
  	util = require('util');
 
 
@@ -38,7 +38,7 @@ function stasisEnd(event, channel) {
 
 function stasisStart(event, channel) {
     var bridge = null;
-
+    
     console.log(util.format('Monkeys! Attack %s!', channel.toString()));
     //create bridge , if we dont create the bridte the app breaks when the user hang up
     ariClient.bridges.create({type: 'mixing'}, function(err, newBridge) {

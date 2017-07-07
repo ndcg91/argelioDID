@@ -12,7 +12,7 @@ var userSchema = new Schema({
   registrationToken: String,
   forgotToken: String,
   type: { type: String, required: true, enum: ['Admin', 'Client'] },
-  numbers: [String],
+  dids: {type: [String], default: []},
   created_at: Date,
   updated_at: Date
 });
@@ -58,7 +58,9 @@ userSchema.methods.comparePassword = function(pw, cb) {
   });
 };
 
-
+userSchema.methods.isAdmin = function(){
+  return this.type == "Admin"
+}
 
 
 

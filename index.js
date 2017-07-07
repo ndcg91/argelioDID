@@ -1,17 +1,20 @@
 var express = require("express");
 var	app = express();
 var mongoose = require('mongoose');
+mongoose.Promise = Promise;
 mongoose.connect('mongodb://127.0.0.1:27017/did');
 var auth = require("./helpers/auth.js");
 
 var routes = require("./routes/index"),
-  views = require("./routes/views/index")
+  	views = require("./routes/views/index")
 	bodyParser = require('body-parser'),
 	logger = require('morgan'),
 	exphbs  = require('express-handlebars'),
 	path = require("path"),
-  ari = require("./helpers/ari")
+  	ari = require("./helpers/ari"),
+  	did = require("./helpers/did")
 
+did.checker()
 
 
 app.use(logger('dev'));

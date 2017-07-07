@@ -3,10 +3,10 @@ app.controller('LoginCtrl', function($scope, $state, $http, $window, $timeout) {
 	var token = JSON.parse($window.localStorage.getItem('token'));
 	console.log("token", token)
 	if (token != null && token != undefined && token != "") {
-		$state.go("dashboard")
+		$state.go("dashboard.general")
 	}
     $scope.loginSubmit = function(){
-    	console.log("register clicked")
+    	console.log("login clicked")
 
     	$http({
 			method: "POST",
@@ -18,7 +18,8 @@ app.controller('LoginCtrl', function($scope, $state, $http, $window, $timeout) {
 				console.log(data);
 				let token = data.data.token
 				$window.localStorage.setItem('token', JSON.stringify(token));
-				$state.go("dashboard")
+				$state.go("dashboard.general")
+				console.log("after")
 			}, function (err) {
 				$scope.authError = true
 				$timeout(function(){$scope.authError = false}, 4000)

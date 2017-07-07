@@ -1,13 +1,15 @@
 // grab the things we need
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+var Dids = require("./did");
 // create a schema
 var callSchema = new Schema({
-  number: Number,
+  number: String, //did id
   channel:{type:String, unique: true},
   duration: Number,
   starTime: Date,
-  endTime: Date
+  endTime: Date,
+  belongs_to: String // client id
 });
 
 callSchema.pre("save",function(next){
@@ -23,8 +25,9 @@ callSchema.pre("save",function(next){
     this.duration = Math.floor(
         (this.endTime.getTime() - this.starTime.getTime()) / 1000 
       )
+    Dids.findByIdAndUpdate(this.number,{$inc:{total_seconds: this.duration}})
+      .catch(err => console.log(err))
   }
-  
   next()
 
 });

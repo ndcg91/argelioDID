@@ -1,0 +1,82 @@
+<div class="x_panel">
+    <div class="x_title">
+        <h2>Asign active tarif to {{number}}</h2>
+      
+        <div class="clearfix"></div>
+    </div>
+    <div class="x_content">
+        <br>
+        <form class="form-horizontal form-label-left">
+            <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12">Number</label>
+                <div class="col-md-9 col-sm-9 col-xs-12">
+                    <input type="number" class="form-control" placeholder="Did Number" ng-model="number" disabled="true">
+                </div>
+            </div>
+             <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12">Tarif</label>
+                <div class="col-md-9 col-sm-9 col-xs-12">
+                    <input type="text" class="form-control" placeholder="Tarif" ng-model="tarif.description" disabled="true">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="x_panel">
+                        <div class="x_title">
+                            <h2 class="pull-left">Tarifs <small>Sumary</small></h2>
+                            <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Filter by ..." ng-model="filterTarifs" >
+                                    <span class="input-group-btn">
+                                  <button class="btn btn-default" type="button">Go!</button>
+                                </span>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr class="headings">
+                                            <th class="column-title" style="display: table-cell;">Description </th>
+                                            <th class="column-title" style="display: table-cell;">Price</th>
+                                            <th class="column-title" style="display: table-cell;">Billing Terms</th>
+                                            <th class="column-title" style="display: table-cell;">Visible</th>
+                                            <th class="column-title no-link last" style="display: table-cell;"><span class="nobr">Action</span>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="even pointer" ng-repeat="tarif in currentTarifs | filter: filterTarifs">
+                                            <td class=" ">{{tarif.description}}</td>
+                                            <td class=" ">{{tarif.price_per_minute}}</td>
+                                            <td class=" ">{{tarif.billing_terms}}</td>
+                                            <td class=" "><strong ng-if="tarif.visible" class="text-success"><i class="fa fa-check" aria-hidden="true"></i></strong></td>
+                                            <td class=" last"><input type="radio" ng-click="adTarif(tarif)" name="tarif-helper"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="ln_solid"></div>
+            <div class="form-group">
+                <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+                    <button class="btn btn-primary pull-right" ui-sref="dashboard.numbers.all">Cancel</button>
+                    <button ng-click="submit()" type="submit" class="btn btn-success pull-right" ng-disabled="!tarif">Submit</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<style>
+    tags-input .tags, tags-input .host  { height: auto !important; }
+    tags-input .tags .tag-item {
+        background: #337ab7;
+    }
+</style>

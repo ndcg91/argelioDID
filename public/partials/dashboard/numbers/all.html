@@ -1,0 +1,332 @@
+<div class="col-xs-12 tile_count x_panel ">
+    <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+        <span class="count_top"><i class="fa fa-phone"></i> Total Numbers</span>
+        <div class="count text-center">{{dids.length}}</div>
+    </div>
+    <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+        <span class="count_top"><i class="fa fa-clock-o"></i> Asigned</span>
+        <div class="count green text-center">{{info.asigned}}</div>
+    </div>
+    <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+        <span class="count_top"><i class="fa fa-clock-o"></i> Unasigned</span>
+        <div class="count red text-center">{{info.unasigned}}</div>
+    </div>
+    <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+        <span class="count_top"><i class="fa fa-phone"></i> Private</span>
+        <div class="count text-center">{{info.private}}</div>
+    </div>
+    <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+        <span class="count_top"><i class="fa fa-phone"></i> Public</span>
+        <div class="count text-center">{{info.public}}</div>
+    </div>
+    <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+        <span class="count_top"><i class="fa fa-phone"></i> Asignation Requests</span>
+        <div class="count red text-center">{{info.request}}</div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-6" uib-accordion>
+        <div class="x_panel custom-panel" uib-accordion-group is-open="status.free">
+            <div uib-accordion-heading>
+                Free<i class="pull-right glyphicon" ng-class="{'glyphicon-resize-small': status.free, 'glyphicon-resize-full': !status.free}"></i>
+            </div>
+            <div class="x_content">
+                <div class="table-responsive custom-table">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr class="headings">
+                                <th class="column-title" style="display: table-cell;">Number </th>
+                                <th class="column-title" style="display: table-cell;">Active Tarif</th>
+                                <th class="column-title" style="display: table-cell;">Available Tarifs</th>
+                                <th class="column-title" style="display: table-cell;">Total Seconds</th>
+                                <th class="column-title no-link last" style="display: table-cell;"><span class="nobr">Action</span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="even pointer" ng-repeat="did in dids | filter : {asigned: false, test: false}">
+                                <td class=" ">{{did.number}}</td>
+                                <td class=" ">{{did.current_tarif.description}}</td>
+                                <td class=" "><a ui-sref="dashboard.tarifs.number({number: did.number})">See</a></td>
+                                <td class="a-right a-right ">{{did.total_seconds}}</td>
+                                <td class=" last"><a class="btn btn-success btn-xs" ui-sref="dashboard.numbers.assign({number:did._id})">Asign</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-6" uib-accordion>
+        <div class="x_panel custom-panel" uib-accordion-group class="panel-default" is-open="status.assigned">
+            <div uib-accordion-heading>
+                Asigned<i class="pull-right glyphicon" ng-class="{'glyphicon-resize-small': status.assigned, 'glyphicon-resize-full': !status.assigned}"></i>
+            </div>
+            <div class="x_content">
+                <div class="table-responsive custom-table">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr class="headings">
+                                <th class="column-title" style="display: table-cell;">Number </th>
+                                <th class="column-title" style="display: table-cell;">Active Tarif</th>
+                                <th class="column-title" style="display: table-cell;">Available Tarifs</th>
+                                <th class="column-title" style="display: table-cell;">Asigned to</th>
+                                <th class="column-title" style="display: table-cell;">Total Min</th>
+                                <th class="column-title no-link last" style="display: table-cell;"><span class="nobr">Action</span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="even pointer" ng-repeat="did in dids | filter : {asigned: true, test: false}">
+                                <td class=" ">{{did.number}}</td>
+                                <td class=" ">{{did.current_tarif.description}}</td>
+                                <td class=" "><a ui-sref="dashboard.tarifs.number({number: did.number})">See</a></td>
+                                <td class=" ">{{did.belongs_to.name || did.belongs_to.username}}</td>
+                                <td class="a-right a-right ">{{did.total_seconds}}</td>
+                                <td class=" last"><a class="btn btn-xs btn-danger" ng-click="confirmUnasignement(did)">Unasign</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-6" uib-accordion>
+        <div class="x_panel custom-panel" uib-accordion-group class="panel-default" is-open="status.pending">
+            <div uib-accordion-heading>
+                Pending Asignation<i class="pull-right glyphicon" ng-class="{'glyphicon-resize-small': status.pending, 'glyphicon-resize-full': !status.pending}"></i>
+            </div>
+            <div class="x_content">
+                <div class="table-responsive custom-table">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr class="headings">
+                                <th class="column-title" style="display: table-cell;">Number </th>
+                                <th class="column-title" style="display: table-cell;">Active Tarif</th>
+                                <th class="column-title" style="display: table-cell;">Available Tarifs</th>
+                                <th class="column-title" style="display: table-cell;">Requested by</th>
+                                <th class="column-title" style="display: table-cell;">Total Min</th>
+                                <th class="column-title no-link last" style="display: table-cell;"><span class="nobr">Action</span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="even pointer" ng-repeat="did in dids | filter : {asignation_confirmed: false, asigned: true, test: false}">
+                                <td class=" ">{{did.number}}</td>
+                                <td class=" ">{{did.current_tarif.description}}</td>
+                                <td class=" "><a ui-sref="dashboard.tarifs.number({number: did.number})">See</a></td>
+                                <td class=" ">{{did.belongs_to.name || did.belongs_to.username}}</td>
+                                <td class="a-right a-right ">{{did.total_seconds}}</td>
+                                <td class=" last"><a class="btn btn-xs btn-primary" ng-click="confirmAsignement(did)">Confirm</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-6" uib-accordion>
+        <div class="x_panel custom-panel" uib-accordion-group class="panel-default" is-open="status.testing">
+            <div uib-accordion-heading>
+                Testing<i class="pull-right glyphicon" ng-class="{'glyphicon-resize-small': status.testing, 'glyphicon-resize-full': !status.testing}"></i>
+            </div>
+            <div class="x_content">
+                <div class="table-responsive custom-table">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr class="headings">
+                                <th class="column-title" style="display: table-cell;">Number </th>
+                                <th class="column-title" style="display: table-cell;">Total Min</th>
+                                <th class="column-title no-link last" style="display: table-cell;"><span class="nobr">Action</span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="even pointer" ng-repeat="did in dids | filter:  {test: true}">
+                                <td class=" ">{{did.number}}</td>
+                                <td class="a-right a-right ">{{did.total_seconds}}</td>
+                                <td class=" last"><a href="#">View</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-6" uib-accordion>
+        <div class="x_panel custom-panel" uib-accordion-group class="panel-default" is-open="status.private">
+            <div uib-accordion-heading>
+                Private<i class="pull-right glyphicon" ng-class="{'glyphicon-resize-small': status.private, 'glyphicon-resize-full': !status.private}"></i>
+            </div>
+            <div class="x_content">
+                <div class="table-responsive custom-table">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr class="headings">
+                                <th class="column-title" style="display: table-cell;">Number </th>
+                                <th class="column-title" style="display: table-cell;">Active Tarif</th>
+                                <th class="column-title" style="display: table-cell;">Available Tarifs</th>
+                                <th class="column-title" style="display: table-cell;">Asigned to</th>
+                                <th class="column-title" style="display: table-cell;">Asignation Status</th>
+                                <th class="column-title" style="display: table-cell;">Total Min</th>
+                                <th class="column-title no-link last" style="display: table-cell;"><span class="nobr">Action</span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="even pointer" ng-repeat="did in dids | filter : {private: true, test: false}">
+                                <td class=" ">{{did.number}}</td>
+                                <td class=" ">{{did.current_tarif.description}}</td>
+                                <td class=" "><a ui-sref="dashboard.tarifs.number({number: did.number})">See</a></td>
+                                <td class=" ">{{did.belongs_to.name || did.belongs_to.username}}</td>
+                                <td class=" "><strong class="text-success" ng-if="did.asignation_confirmed">Assigned</strong><strong class="text-danger" ng-if="!did.asignation_confirmed">Pending Asignation</strong></td>
+                                <td class="a-right a-right ">{{did.total_seconds}}</td>
+                                <td class=" last"><a href="#">View</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-6" uib-accordion>
+        <div class="x_panel custom-panel" uib-accordion-group class="panel-default" is-open="status.visible">
+            <div uib-accordion-heading>
+                Client Visible<i class="pull-right glyphicon" ng-class="{'glyphicon-resize-small': status.visible, 'glyphicon-resize-full': !status.visible}"></i>
+            </div>
+            <div class="x_content">
+                <div class="table-responsive custom-table">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr class="headings">
+                                <th class="column-title" style="display: table-cell;">Number </th>
+                                <th class="column-title" style="display: table-cell;">Active Tarif</th>
+                                <th class="column-title" style="display: table-cell;">Available Tarifs</th>
+                                <th class="column-title" style="display: table-cell;">Asigned to</th>
+                                <th class="column-title" style="display: table-cell;">Asignation Status</th>
+                                <th class="column-title" style="display: table-cell;">Total Min</th>
+                                <th class="column-title no-link last" style="display: table-cell;"><span class="nobr">Action</span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="even pointer" ng-repeat="did in dids | filter: {private: false, test: false}">
+                                <td class=" ">{{did.number}}</td>
+                                <td class=" ">{{did.current_tarif.description}}</td>
+                                <td class=" "><a ui-sref="dashboard.tarifs.number({number: did.number})">See</a></td>
+                                <td class=" ">{{did.belongs_to.name || did.belongs_to.username}}</td>
+                                <td class=" "><strong class="text-success" ng-if="did.asignation_confirmed">Assigned</strong><strong class="text-danger" ng-if="!did.asignation_confirmed">Pending Asignation</strong></td>
+                                <td class="a-right a-right ">{{did.total_seconds}}</td>
+                                <td class=" last"><a href="#">View</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12" uib-accordion>
+        <div class="x_panel custom-panel" uib-accordion-group class="panel-default" is-open="status.sumary">
+            <div uib-accordion-heading>
+                Sumary<i class="pull-right glyphicon" ng-class="{'glyphicon-resize-small': status.sumary, 'glyphicon-resize-full': !status.sumary}"></i>
+            </div>
+            <div class="x_content">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr class="headings">
+                                <th class="column-title" style="display: table-cell;">Number </th>
+                                <th class="column-title" style="display: table-cell;">Active Tarif</th>
+                                <th class="column-title" style="display: table-cell;">Available Tarifs</th>
+                                <th class="column-title" style="display: table-cell;">Asigned to</th>
+                                <th class="column-title" style="display: table-cell;">Asignation Status</th>
+                                <th class="column-title" style="display: table-cell;">Total Min</th>
+                                <th class="column-title no-link last" style="display: table-cell;"><span class="nobr">Action</span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="even pointer" ng-repeat="did in dids | filter : {test: false}">
+                                <td class=" ">{{did.number}}</td>
+                                <td class=" ">{{did.current_tarif.description}}</td>
+                                <td class=" "><a ui-sref="dashboard.tarifs.number({number: did.number})">See</a></td>
+                                <td class=" ">{{did.belongs_to.name || did.belongs_to.username}}</td>
+                                <td class=" "><strong class="text-success" ng-if="did.asignation_confirmed">Assigned</strong><strong class="text-danger" ng-if="!did.asignation_confirmed">Pending Asignation</strong></td>
+                                <td class="a-right a-right ">{{did.total_seconds}}</td>
+                                <td class=" last"><a href="#">View</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+.custom-table {
+    height: 300px;
+    overflow-y: scroll;
+}
+
+.custom-panel {
+    padding: 0;
+}
+
+.custom-title {
+    background-color: #ededed;
+    color: #666;
+    padding: 10;
+    margin: 0;
+    position: relative;
+    top: 0;
+}
+
+.headings {
+    font-size: 12px;
+    font-weight: lighter;
+}
+
+.panel-heading {
+    padding: 15;
+    background: #fff;
+}
+</style>
+<script type="text/ng-template" id="myModalContent.html">
+    <div class="modal-header">
+        <h3 class="modal-title" id="modal-title">Atention!</h3>
+    </div>
+    <div class="modal-body" id="modal-body">
+        <h2>This action cannot be undone, confirm?</h2>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-danger pull-right" type="button" ng-click="ok()">OK</button>
+        <button class="btn btn-primary pull-right" type="button" ng-click="cancel()">Cancel</button>
+    </div>
+</script>
+
+<script type="text/ng-template" id="confirmAsignement.html">
+    <div class="modal-header">
+        <h3 class="modal-title" id="modal-title">Atention!</h3>
+    </div>
+    <div class="modal-body" id="modal-body">
+        <h2>This action cannot be undone, the user will be attached to the did, confirm?</h2>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-danger pull-right" type="button" ng-click="ok()">OK</button>
+        <button class="btn btn-primary pull-right" type="button" ng-click="cancel()">Cancel</button>
+    </div>
+</script>
+

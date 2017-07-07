@@ -1,0 +1,46 @@
+<div class="col-xs-12">
+    <h1 class="pull-left">Tarif</h1>
+    <button class="btn btn-primary pull-left ml30 mt10" ui-sref="dashboard.tarifs.add">Add New</button>
+</div>
+<div class="input-group col-xs-2 pull-right" >
+    <input type="text" class="form-control" placeholder="Filter for..." ng-model="tarifFilter">
+    <span class="input-group-btn">
+  <button class="btn btn-default" type="button">Go!</button>
+</span>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>Tarifs <small>Sumary</small></h2>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr class="headings">
+                                <th class="column-title" style="display: table-cell;">Description </th>
+                                <th class="column-title" style="display: table-cell;">Price</th>
+                                <th class="column-title" style="display: table-cell;">Billing Terms</th>
+                                <th class="column-title" style="display: table-cell;">Public</th>
+                                <th class="column-title no-link last" style="display: table-cell;"><span class="nobr">Action</span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="even pointer" ng-repeat="tarif in tarifs | filter: tarifFilter">
+                                <td class=" ">{{tarif.description}}</td>
+                                <td class=" ">{{tarif.price_per_minute}}</td>
+                                <td class=" ">{{tarif.billing_terms}}</td>
+                                <td class=" "><strong class="success" ng-if="tarif.visible">Public</strong><strong class="danger" ng-if="!tarif.visible">Private</strong></td>
+                                <td class=" last"><a ui-sref="dashboard.numbers.tarif({tarifId: tarif._id})">Check Asignations</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

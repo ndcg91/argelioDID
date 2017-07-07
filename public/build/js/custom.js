@@ -19,7 +19,7 @@ $(document).ready(function() {
     // TODO: This is some kind of easy fix, maybe we can improve this
     var setContentHeight = function () {
         // reset height
-        $RIGHT_COL.css('min-height', $(window).height());
+        // $RIGHT_COL.css('min-height', $(window).height());
 
         var bodyHeight = $BODY.outerHeight(),
             footerHeight = $BODY.hasClass('footer_fixed') ? 0 : $FOOTER.height(),
@@ -29,7 +29,7 @@ $(document).ready(function() {
         // normalize content
         contentHeight -= $NAV_MENU.height() + footerHeight;
 
-        $RIGHT_COL.css('min-height', contentHeight);
+        // $RIGHT_COL.css('min-height', contentHeight);
     };
 
     $SIDEBAR_MENU.find('a').on('click', function(ev) {
@@ -134,9 +134,9 @@ $(document).ready(function() {
 // /Tooltip
 
 // Progressbar
-if ($(".progress .progress-bar")[0]) {
-    $('.progress .progress-bar').progressbar();
-}
+// if ($(".progress .progress-bar")[0]) {
+//     $('.progress .progress-bar').progressbar();
+// }
 // /Progressbar
 
 // Switchery

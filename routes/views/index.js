@@ -10,6 +10,10 @@ router.get("/",function(req,res){
 	res.render("login_register")
 })
 
+router.get("/template",function(req,res){
+	res.render("template");
+})
+
 router.get("/test",auth.authenticate(),function(req,res){
 	res.json(req.user)
 })

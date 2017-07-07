@@ -133,7 +133,15 @@ label {
   padding: 20px 30px;
   border-bottom-leftt-radius: 5px;
 }
+.panel-login>.panel-heading .login.active {
+    background: #2d3b55;
+}
 .panel-login>.panel-heading .register {
+  padding: 20px 30px;
+  background: #F7F7F7;
+  border-bottom-right-radius: 5px;
+}
+.panel-login>.panel-heading .register.active {
   padding: 20px 30px;
   background: #2d3b55;
   border-bottom-right-radius: 5px;
@@ -147,7 +155,15 @@ label {
   -moz-transition: all 0.1s linear;
   transition: all 0.1s linear;
 }
+.panel-login>.panel-heading a.active{
+  color:white;
+}
 .panel-login>.panel-heading a#register-form-link {
+  color: #666;
+  width: 100%;
+  text-align: right;
+}
+.panel-login>.panel-heading a#register-form-link.active{
   color: #fff;
   width: 100%;
   text-align: right;
@@ -224,3 +240,7 @@ label {
   color: #fff;
   background-color: #2D3B55;
 }
+
+
+
+
