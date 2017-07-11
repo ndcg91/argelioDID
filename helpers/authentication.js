@@ -5,32 +5,24 @@ var crypto = require("crypto");
 var mailer = require("../mailer")
 
 module.exports = {
-	login: function(req,res){
+	login: (req,res) => {
 		let user = req.body.user;
 		let password = req.body.password;
-		Users.findOne({username: user},function(err,user){
-			if (!err && user != null){
-				user.comparePassword(password, function(err,match){
-					if (!err && match){
-						let payload = {
-							id: user._id
-						}
-						var token = jwt.sign(payload, config.jwtSecret, {
-							expiresIn: 3600 // in seconds
-						});
-						res.json({ success: true, token: 'JWT ' + token });
-					}
-					else{
-						res.status(401).send({error: "auth fail"})
-					}
-				})
-			}
-			else{
-				res.status(401).send({error: "auth fail"})
-			}
-		})
+
+		Users.findOne({username: user})
+			.then(user => {
+				user.comparePassword(password)
+					.then(() => {
+						let payload = { id: user._id }
+						let token = jwt.sign(payload, config.jwtSecret, { expiresIn: 31536000 });
+						res.send({ success: true, token: 'JWT ' + token })
+					})
+					.catch(() => res.status(401).send({error: "auth fail"}) )
+			})
+			.catch(() => res.status(401).send({error: "auth fail"}))
 	},
-	register: function(req,res){
+
+	register: (req,res) => {
 		let username = req.body.username;
 		let password = req.body.password;
 		let email = req.body.email;
@@ -46,19 +38,57 @@ module.exports = {
 					expiresIn: 3600 // in seconds
 				})
 			})
-			newUser.save(function(err){
-				if (!err) {
+			newUser.save()
+				.then(() => {
 					mailer.sendRegisterMail(newUser.registrationToken, newUser.email)
 					res.send({msg:"registered"})
-				}
-				else { console.log(err);res.status(401).send({error: "auth fail"}) }
-			})
+				})
+				.catch(err => res.status(401).send({error: "auth fail"}) )
 		}
 		else{
 			res.status(401).send({error: "auth fail"})
 		}
 	},
-	reset: function(req,res){
+
+	resendActivation: (req, res) => {
+	    let user = req.body.email;
+	    Users.findOne({ email: user })
+	        .then(user => {
+	            let registrationToken =  jwt.sign({ message: crypto.randomBytes(64).toString('hex') }, config.jwtSecret, {
+	                expiresIn: 3600 // in seconds
+	            })
+	            user.registrationToken = registrationToken
+	            user.save()
+	            	.then(()=> {
+	            		mailer.sendRegisterMail(user.registrationToken, user.email)
+	            	})
+	            	.catch(err => res.render("registration_check_email"))
+	           
+	        })
+			.catch(err => res.render("registration_check_email"))
+	},
+
+	confirmRegister: (req, res) => {
+		jwt.verify(req.params.token, config.jwtSecret, (err,decoded) => {
+			if (err)
+				res.render('registration_confirmed_error')
+			else{
+				Users.findOne({ registrationToken: req.params.token }).then(user => {
+		            user.registerConfirmed = true
+		            user.save();
+		            res.render('registration_confirmed_success')
+		        })
+		        .catch(err => {
+		            res.render('registration_confirmed_error')
+		        })
+			}
+		})
+			
+	    	
+	},
+
+
+	reset: (req,res) => {
 		var newPassword = req.body.password;
 		var userForgotToken = req.body.token;
 		if (newPassword == null || userForgotToken == null){
@@ -66,12 +96,8 @@ module.exports = {
 			return
 		}
 
-		Users.findOne({forgotToken:userForgotToken},function(err,user){
-			if (err || user == null){
-				res.status(401).send({error: "incorrect parameters"});
-				return 
-			}
-			else{
+		Users.findOne({forgotToken:userForgotToken})
+			.then( (err,user) => {
 				user.password = newPassword;
 				user.save(function(err,savedUser){
 					if (!err){
@@ -79,10 +105,12 @@ module.exports = {
 						return
 					}
 				})
-			}
-		})
+			})
+			.catch(err => res.status(401).send({error: "incorrect parameters"}) )
 	},
-	forgot: function(req,res){
+
+
+	forgot: (req,res) => {
 		var userID = req.params.id;
 		Users.findById(userID,function(err,user){
 			if (!err && user != null){

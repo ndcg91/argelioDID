@@ -1,12 +1,13 @@
 angular.module('did')
 
-.controller('DashboardDidAll', function($scope, apiQuery, $uibModal, $log) {
+.controller('DashboardDidAll', function($scope, apiQuery) {
     $scope.info = {
         asigned: 0,
         unasigned: 0,
         private: 0,
         public: 0,
-        request: 0
+        request: 0,
+        total: 0
     }
     $scope.status = {
         free: true,
@@ -18,57 +19,41 @@ angular.module('did')
         visible: true
     }
 
-
-    $scope.confirmUnasignement = (number) => {
-        console.log("inside", number)
-        var modalInstance = $uibModal.open({
-            ariaLabelledBy: 'modal-title',
-            ariaDescribedBy: 'modal-body',
-            templateUrl: 'myModalContent.html',
-            controller: function($scope, $uibModalInstance, apiQuery, $window) {
-
-                $scope.ok = function() {
-                    $uibModalInstance.close(apiQuery.did.unasign(number._id).then(() => $window.location.reload()));
-                };
-
-                $scope.cancel = function() {
-                    $uibModalInstance.dismiss('cancel');
-                };
-            },
-            size: "small",
-            appendTo: $("body"),
-        });
-
-        modalInstance.result.then(function(selectedItem) {}, function() {
-            $log.info('Modal dismissed at: ' + new Date());
-        });
+    $scope.setDidList = (section)=>{
+        switch (section) {
+            case "free":
+                // statements_1
+                $scope.dids = dids.filter(x => !x.test && !x.asigned)
+                break;
+            case "asigned":
+                // statements_1
+                $scope.dids = dids.filter(x => !x.test && x.asigned && x.asignation_confirmed)
+                break;
+            case "pending confirmation":
+                // statements_1
+                $scope.dids = dids.filter(x => !x.test && x.asigned && !x.asignation_confirmed)
+                break;
+            case "testing":
+                $scope.dids = dids.filter(x => x.test)
+                // statements_1
+                break;
+            case "private":
+                $scope.dids = dids.filter(x => !x.test && x.private)
+                // statements_1
+                break;
+            case "public":
+                $scope.dids = dids.filter(x => !x.test && !x.private)
+                // statements_1
+                break;
+            default:
+                $scope.dids = dids
+                // statements_def
+                break;
+        }
     }
 
-
-    $scope.confirmAsignement = (number) => {
-        console.log("inside", number)
-        var modalInstance = $uibModal.open({
-            ariaLabelledBy: 'modal-title',
-            ariaDescribedBy: 'modal-body',
-            templateUrl: 'confirmAsignement.html',
-            controller: function($scope, $uibModalInstance, apiQuery, $window) {
-
-                $scope.ok = function() {
-                    $uibModalInstance.close(apiQuery.did.confirm(number._id).then(() => $window.location.reload()));
-                };
-
-                $scope.cancel = function() {
-                    $uibModalInstance.dismiss('cancel');
-                };
-            },
-            size: "small",
-            appendTo: $("body"),
-        });
-
-        modalInstance.result.then(function(selectedItem) {}, function() {
-            $log.info('Modal dismissed at: ' + new Date());
-        });
-    }
+    
+    var dids = [];
     apiQuery.did.all()
         .then(data => {
             data.forEach(did => {
@@ -88,7 +73,9 @@ angular.module('did')
                     $scope.info.public += 1
                 if (did.asignation_confirmed && !did.test)
                     $scope.request += 1
+                $scope.info.total += 1
             })
             $scope.dids = data
+            dids = angular.copy(data)
         })
 })

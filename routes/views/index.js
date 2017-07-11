@@ -1,25 +1,36 @@
 var express = require("express");
 var router = express.Router();
-var users = require("../../models/users.js")
-var mongoose = require('mongoose');
 var authentication = require("../../helpers/authentication.js");
-var auth = require("../../helpers/auth.js");
 
-router.get("/",function(req,res){
-	console.log(req.headers)
-	res.render("login_register")
-})
 
-router.get("/template",function(req,res){
-	res.render("template");
-})
 
-router.get("/test",auth.authenticate(),function(req,res){
-	res.json(req.user)
-})
 
-router.post("/login",authentication.login)
-router.post("/reset",authentication.reset)
-router.get("/forgot/:id",authentication.forgot)
+
+/*======================================
+=            GENERAL ROUTES            =
+======================================*/
+
+router.get("/", (req,res) => res.render("login_register") )
+router.get("/template", (req, res) => res.render("template") )
+
+/*=====  End of GENERAL ROUTES  ======*/
+
+
+
+/*===========================================================
+=            LOGIN AND LOGIN CONFIRMATION ROUTES            =
+===========================================================*/
+router.post("/login", authentication.login)
+router.post("/register/resend/link", authentication.resendActivation)
+router.get("/registration/completed", (req,res) => res.render("registration_check_email"))
+router.get("/register/:token", authentication.confirmRegister)
+router.post("/reset", authentication.reset)
+router.get("/forgot/:id", authentication.forgot)
+/*=====  End of LOGIN AND LOGIN CONFIRMATION ROUTES  ======*/
+
+
+
+
+
 
 module.exports = router;

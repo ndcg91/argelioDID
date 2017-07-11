@@ -1,0 +1,26 @@
+<div class="table-responsive">
+    <table class="table table-hover">
+        <thead>
+            <tr class="headings">
+                <th class="column-title" style="display: table-cell;">Description </th>
+                <th class="column-title" style="display: table-cell;">Price</th>
+                <th class="column-title" style="display: table-cell;">Billing Terms</th>
+                <th class="column-title" style="display: table-cell;">Public</th>
+                <th class="column-title no-link last" style="display: table-cell;"><span class="nobr pull-right pr30">Actions</span>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="even pointer" ng-repeat="tarif in tarifs | filter: tarifFilter">
+                <td class=" ">{{tarif.description}}</td>
+                <td class=" ">{{tarif.price_per_minute}}</td>
+                <td class=" ">{{tarif.billing_terms}}</td>
+                <td class=" "><strong class="text-success" ng-if="tarif.visible">Public</strong><strong class="text-danger" ng-if="!tarif.visible">Private</strong></td>
+                <td class=" last">
+                    <a ui-sref="dashboard.numbers.tarif({tarifId: tarif._id})" class="btn btn-primary pull-right btn-xs">Asignations</a>
+                    <a ui-sref="dashboard.tarifs.detail({tarif: tarif._id})" class="btn btn-success pull-right btn-xs">View</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

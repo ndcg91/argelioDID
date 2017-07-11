@@ -1,0 +1,77 @@
+<div class="table-responsive" ng-controller="didTableController">
+    <table class="table table-hover">
+        <thead>
+            <tr class="headings">
+                <th class="column-title" style="display: table-cell;">Number </th>
+                <th class="column-title" style="display: table-cell;">Active Tarif</th>
+                <th class="column-title" style="display: table-cell;">Available Tarifs</th>
+                <th class="column-title" style="display: table-cell;">Asigned to</th>
+                <th class="column-title" style="display: table-cell;">Quick Actions</th>
+                <th class="column-title" style="display: table-cell;">Total Min</th>
+                <th class="column-title no-link last" style="display: table-cell;"><span class="nobr">Action</span>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="even pointer" ng-repeat="did in dids | filter: filter1 |filter : filter">
+                <td class=" ">{{did.number}}</td>
+                <td class=" ">{{did.current_tarif.description}}</td>
+                <td class=" "><a ui-sref="dashboard.tarifs.number({number: did.number})">See</a></td>
+                <td class=" ">{{did.belongs_to.name || did.belongs_to.username}}</td>
+                <td class=" ">
+                    <!-- If free we can asign it to a number -->
+                    <a class="btn btn-success btn-xs" ng-if="!did.test && !did.asigned" ui-sref="dashboard.numbers.assign({number:did._id})">Asign</a>
+                    <!-- If asigned and confirmed we can unasign it -->
+                    <a class="btn btn-xs btn-danger" ng-if="!did.test && did.asigned && did.asignation_confirmed" ng-click="confirmUnasignement(did)">Unasign</a>
+                    <!-- If asigned but unconfirmed we can confirm it -->
+                    <a class="btn btn-xs btn-primary" ng-if="!did.test && did.asigned && !did.asignation_confirmed" ng-click="confirmAsignement(did)">Confirm</a>
+                    <a class="btn btn-xs btn-primary" ng-if="!did.test && did.private" ng-click="makePublic(did)">Make Public</a>
+                    <a class="btn btn-xs btn-primary" ng-if="!did.test && !did.private" ng-click="makePublic(did)">Make Private</a>
+                    <a class="btn btn-xs btn-danger" ng-click="confirmRemoval(did)">Remove</a>
+
+
+                </td>
+                <td class="a-right a-right ">{{did.total_seconds}}</td>
+                <td class=" last"><a ui-sref="dashboard.numbers.detail({number: did._id})" class="btn btn-primary btn-xs">Edit</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<script type="text/ng-template" id="confirmRemoval.html">
+    <div class="modal-header">
+        <h3 class="modal-title" id="modal-title">Atention!</h3>
+    </div>
+    <div class="modal-body" id="modal-body">
+        <h2>This action cannot be undone, confirm?. This will not remove call history asociated with this number</h2>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-danger pull-right" type="button" ng-click="ok()">OK</button>
+        <button class="btn btn-primary pull-right" type="button" ng-click="cancel()">Cancel</button>
+    </div>
+</script>
+<script type="text/ng-template" id="myModalContent.html">
+    <div class="modal-header">
+        <h3 class="modal-title" id="modal-title">Atention!</h3>
+    </div>
+    <div class="modal-body" id="modal-body">
+        <h2>This action cannot be undone, confirm?</h2>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-danger pull-right" type="button" ng-click="ok()">OK</button>
+        <button class="btn btn-primary pull-right" type="button" ng-click="cancel()">Cancel</button>
+    </div>
+</script>
+<script type="text/ng-template" id="confirmAsignement.html">
+    <div class="modal-header">
+        <h3 class="modal-title" id="modal-title">Atention!</h3>
+    </div>
+    <div class="modal-body" id="modal-body">
+        <h2>This action cannot be undone, the user will be attached to the did, confirm?</h2>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-danger pull-right" type="button" ng-click="ok()">OK</button>
+        <button class="btn btn-primary pull-right" type="button" ng-click="cancel()">Cancel</button>
+    </div>
+</script>

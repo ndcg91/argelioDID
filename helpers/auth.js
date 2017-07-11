@@ -25,5 +25,11 @@ module.exports = {
     },
     authenticate: function() {
         return passport.authenticate("jwt", cfg.jwtSession);
+    },
+    onlyAdmin: (req,res, next) => {
+        if (req.user.isAdmin())
+            next()
+        else
+            res.send({msg: "Only admin is allowed to execute this request"})
     }
 };

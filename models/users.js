@@ -49,13 +49,18 @@ userSchema.pre("save",function(next){
 });
 
 // Create method to compare password input to password saved in database
-userSchema.methods.comparePassword = function(pw, cb) {  
-  bcrypt.compare(pw, this.password, function(err, isMatch) {
-    if (err) {
-      return cb(err);
-    }
-    cb(null, isMatch);
-  });
+userSchema.methods.comparePassword = function(pw) { 
+  console.log("compare",pw, this) 
+  return new Promise( (fulfill, reject) => {
+      bcrypt.compare(pw, this.password, (err, isMatch) => {
+        console.log(err, isMatch)
+        if (err) 
+          reject(err);
+        else
+          fulfill(isMatch)
+      });
+  })
+  
 };
 
 userSchema.methods.isAdmin = function(){

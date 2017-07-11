@@ -20,7 +20,7 @@ angular.module("did")
                 var defered = $q.defer();
                 var promise = defered.promise;
 
-                $http.get("/api/users")
+                $http.get("/api/user/all")
                     .then(data => defered.resolve(data.data))
                     .catch(err => defered.reject(err))
                 return promise
@@ -95,7 +95,7 @@ angular.module("did")
                 var defered = $q.defer();
                 var promise = defered.promise;
 
-                $http.get("/api/did/tarif/" + number )
+                $http.get("/api/tarif/did/" + number )
                     .then(data => defered.resolve(data.data))
                     .catch(err => defered.reject(err))
                 return promise
@@ -107,6 +107,22 @@ angular.module("did")
                     .then(data => defered.resolve(data.data))
                     .catch(err => defered.reject(err))
                 return promise
+            },
+            edit: (id,did) => {
+                var defered = $q.defer();
+                var promise = defered.promise;
+                $http.patch("/api/did/"+id,did)
+                    .then(data => defered.resolve(data.data))
+                    .catch(err => defered.reject(err))
+                return promise;
+            },
+            delete: (did) => {
+                var defered = $q.defer();
+                var promise = defered.promise;
+                $http.delete("/api/did/"+did)
+                    .then(data => defered.resolve(data.data))
+                    .catch(err => defered.reject(err))
+                return promise;
             }
             
         }
@@ -124,6 +140,23 @@ angular.module("did")
                 var promise = defered.promise;
 
                 $http.get("/api/tarifs")
+                    .then(data => defered.resolve(data.data))
+                    .catch(err => defered.reject(err))
+                return promise;
+            },
+            getOne: (id) => {
+                var defered = $q.defer();
+                var promise = defered.promise;
+
+                $http.get("/api/tarif/"+ id)
+                    .then(data => defered.resolve(data.data))
+                    .catch(err => defered.reject(err))
+                return promise;
+            },
+            edit: (id,tarif) => {
+                var defered = $q.defer();
+                var promise = defered.promise;
+                $http.patch("/api/tarif/"+id,tarif)
                     .then(data => defered.resolve(data.data))
                     .catch(err => defered.reject(err))
                 return promise;

@@ -3,7 +3,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 // create a schema
 var didSchema = new Schema({
-  number: { type: String, unique: true },
+  number: { type: Number, unique: true },
   tarifs: {type: [String], default: []},
   asigned: { type: Boolean, default: false },
   total_seconds: {type: Number, default: 0},

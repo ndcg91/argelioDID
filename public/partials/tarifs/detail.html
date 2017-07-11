@@ -1,0 +1,103 @@
+<div class="x_panel">
+    <div class="x_title">
+        <h2>Edit Tarif</h2>
+        <a class="btn btn-dark pull-right">Check Asignations</a>
+        <a class="btn btn-dark pull-right" ng-click="editing = true; asignDID = false">Edit</a>
+        <a class="btn btn-dark pull-right" ng-click="asignDID = true; editing = false">Asign Tarif to Did</a>
+        <div class="clearfix"></div>
+    </div>
+    <div class="x_content">
+        <br>
+        <form class="form-horizontal form-label-left" ng-submit="createTarif()">
+            <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12">Description <span class="required">*</span>
+                </label>
+                <div class="col-md-9 col-sm-9 col-xs-12">
+                    <textarea class="form-control" rows="3" placeholder="Description" ng-model="tarif.description" ng-disabled="!editing"></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12">Price</label>
+                <div class="col-md-9 col-sm-9 col-xs-12">
+                    <input type="number" step="0.01" class="form-control" placeholder="Price" ng-model="tarif.price_per_minute" ng-disabled="!editing">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12">Billings terms measured on days</label>
+                <div class="col-md-9 col-sm-9 col-xs-12">
+                    <input type="number" class="form-control" placeholder="Billins Terms" ng-model="tarif.billing_terms" ng-disabled="!editing">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 col-sm-3 col-xs-12 control-label">Visible for user </label>
+                <div class="checkbox col-md-9 col-sm-9 col-xs-12">
+                    <label>
+                        <input type="checkbox" ng-model="tarif.visible" ng-disabled="!editing"> Visible
+                    </label>
+                </div>
+            </div>
+        </form>
+
+        <!--=====================================
+        =            Asign DID to TARIF            =
+        ======================================-->
+        <div class="row" ng-show="asignDID">
+            <div class="col-xs-12" uib-accordion>
+                <div class="x_panel custom-panel" uib-accordion-group class="panel-default" is-open="true">
+                    <div uib-accordion-heading>
+                        Sumary<i class="pull-right glyphicon" ng-class="{'glyphicon-resize-small': status.sumary, 'glyphicon-resize-full': !status.sumary}"></i>
+                        <div class="col-md-3 col-sm-3 col-xs-12 form-group pull-right top_search" style="position: absolute; top: 7px; right: 50;">
+                            <div class="input-group">
+                                <input type="text" class="form-control ng-pristine ng-untouched ng-valid ng-empty" placeholder="Filter by ..." ng-model="filterTarifs">
+                                <span class="input-group-btn">
+                          <button class="btn btn-default" type="button">Go!</button>
+                        </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="x_content">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr class="headings">
+                                        <th class="column-title" style="display: table-cell;">Number </th>
+                                        <th class="column-title" style="display: table-cell;">Active Tarif</th>
+                                        <th class="column-title" style="display: table-cell;">Available Tarifs</th>
+                                        <th class="column-title" style="display: table-cell;">Asigned to</th>
+                                        <th class="column-title" style="display: table-cell;">Asignation Status</th>
+                                        <th class="column-title" style="display: table-cell;">Total Min</th>
+                                        <th class="column-title no-link last" style="display: table-cell;"><span class="nobr">Asign</span>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="even pointer" ng-repeat="did in dids | filter : {test: false}">
+                                        <td class=" ">{{did.number}}</td>
+                                        <td class=" ">{{did.current_tarif.description}}</td>
+                                        <td class=" "><a ui-sref="dashboard.tarifs.number({number: did.number})">See</a></td>
+                                        <td class=" ">{{did.belongs_to.name || did.belongs_to.username}}</td>
+                                        <td class=" "><strong class="text-success" ng-if="did.asignation_confirmed">Assigned</strong><strong class="text-danger" ng-if="!did.asignation_confirmed">Pending Asignation</strong></td>
+                                        <td class="a-right a-right ">{{did.total_seconds}}</td>
+                                        <td class=" last"><input type="radio" name="asignedDID" ng-click="asignedDID = did">
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--====  End of Asign DID to TARIF  ====-->
+        <!--=====================================
+        =            SUBMIT SECTION            =
+        ======================================-->
+        <div class="form-group" ng-show="editing || asignDID">
+            <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+                <button class="btn btn-primary pull-right" ng-click="editing = false">Cancel</button>
+                <button type="submit" class="btn btn-success pull-right" ng-click="submit()">Submit</button>
+            </div>
+        </div>
+        <!--====  End of SUBMIT SECTION  ====-->
+    </div>
+</div>

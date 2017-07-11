@@ -16,7 +16,7 @@ module.exports.sendRegisterMail = function (token,email){
         from: '"Callcaribe 👻" <admin@callcaribe.com>', // sender address
         to: email, // list of receivers
         subject: 'Confirm your email address ✔', // Subject line
-        html: '<a href="http://localhost:3000/api/register/' + token + '">Click here to confirm your email</a>' // html body
+        html: '<a href="http://localhost:3000/register/' + token + '">Click here to confirm your email</a>' // html body
     };
     // send mail with defined transport object
     transporter.sendMail(mailOptions, (error, info) => {

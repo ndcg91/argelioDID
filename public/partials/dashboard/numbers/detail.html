@@ -1,0 +1,107 @@
+<div class="x_panel">
+    <div class="x_title">
+        <h2>Number Details</h2>
+        <a class="btn btn-dark pull-right" ng-click="editing = true; asignDID = false">Edit</a>
+        <a class="btn btn-dark pull-right" ng-click="delete()">Remove</a>
+        <div class="clearfix"></div>
+    </div>
+    <div class="x_content">
+        <br>
+        <form class="form-horizontal form-label-left" ng-submit="createTarif()">
+            <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12">Number</label>
+                <div class="col-md-9 col-sm-9 col-xs-12">
+                    <input type="number" class="form-control" placeholder="Did Number" ng-model="did.number" ng-disabled="!editing">
+                </div>
+            </div>
+            <div class="control-group" style="height:35px">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12">Tarifs</label>
+                <div class="col-md-9 col-sm-9 col-xs-12">
+                    <tags-input class="bootstrap" ng-disabled="!editing" ng-model="did.tarifs" placeholder="Add a tarif" add-from-autocomplete-only="true" replace-spaces-with-dashes="false" on-tag-added="tagAdded($tag)" on-tag-removed="tagRemoved($tag)" display-property="description">
+                        <auto-complete source="loadTarifs($query)" min-length="0" debounce-delay="0" max-results-to-show="10"></auto-complete>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12">Private</label>
+                <div class="col-md-9 col-sm-9 col-xs-12">
+                    <input type="checkbox" class="form-control" ng-disabled="!editing" ng-model="did.private" style="box-shadow:none">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12">Testing</label>
+                <div class="col-md-9 col-sm-9 col-xs-12">
+                    <input type="checkbox" class="form-control" ng-model="did.test" style="box-shadow:none" ng-disabled="!editing">
+                </div>
+            </div>
+        </form>
+        <!--=====================================
+        =            Asign DID to TARIF            =
+        ======================================-->
+        <div class="row" ng-show="editing">
+            <h2 class="p20">Asign Tarif</h2>
+            <div class="col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2 class="pull-left">Tarifs <small>Sumary</small></h2>
+                        <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Filter by ..." ng-model="filterTarifs">
+                                <span class="input-group-btn">
+                                  <button class="btn btn-default" type="button">Go!</button>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr class="headings">
+                                        <th class="column-title" style="display: table-cell;">Description </th>
+                                        <th class="column-title" style="display: table-cell;">Price</th>
+                                        <th class="column-title" style="display: table-cell;">Billing Terms</th>
+                                        <th class="column-title" style="display: table-cell;">Visible</th>
+                                        <th class="column-title no-link last" style="display: table-cell;"><span class="nobr">Action</span>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="even pointer" ng-repeat="tarif in tarifs | filter: filterTarifs">
+                                        <td class=" ">{{tarif.description}}</td>
+                                        <td class=" ">{{tarif.price_per_minute}}</td>
+                                        <td class=" ">{{tarif.billing_terms}}</td>
+                                        <td class=" "><strong ng-if="tarif.visible" class="text-success"><i class="fa fa-check" aria-hidden="true"></i></strong></td>
+                                        <td class=" last"><a ng-click="addTarif(tarif)" class="btn btn-primary btn-xs">Add</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--====  End of Asign DID to TARIF  ====-->
+        <!--=====================================
+        =            SUBMIT SECTION            =
+        ======================================-->
+        <div class="form-group" ng-show="editing || asignDID">
+            <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+                <button class="btn btn-primary pull-right" ng-click="editing = false">Cancel</button>
+                <button type="submit" class="btn btn-success pull-right" ng-click="submit()">Submit</button>
+            </div>
+        </div>
+        <!--====  End of SUBMIT SECTION  ====-->
+    </div>
+</div>
+<style>
+tags-input .tags,
+tags-input .host {
+    height: auto !important;
+}
+
+tags-input .tags .tag-item {
+    background: #337ab7 !important;
+}
+</style>

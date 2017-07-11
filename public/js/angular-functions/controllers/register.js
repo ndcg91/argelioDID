@@ -19,7 +19,7 @@ app.controller('RegisterCtrl', function($scope,$state,$window,$http,$timeout) {
 				url:"/api/register"
 			})
 			.then(function(data){
-					console.log(data);
+					$window.location.href = "/registration/completed"
 					
 				}, function (err) {
 					$scope.authError = true

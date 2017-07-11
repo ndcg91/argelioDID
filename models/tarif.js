@@ -7,7 +7,7 @@ var tarifSchema = new Schema({
   condition:String,
   price_per_minute: Number,
   billing_terms: Number, // frecuencia de pago, el cliente no puede cambiar el billings terms
-  visible: {type: Boolean, default: false},
+  visible: { type: Boolean, default: false },
   created_at: Date,
   updated_at: Date
 });
