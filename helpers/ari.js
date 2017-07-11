@@ -38,8 +38,8 @@ function stasisEnd(event, channel) {
 
 function stasisStart(event, channel) {
     var bridge = null;
-    
-    console.log(util.format('Monkeys! Attack %s!', channel.toString()));
+    console.log("Session:", channel.dialplan.exten);
+
     //create bridge , if we dont create the bridte the app breaks when the user hang up
     ariClient.bridges.create({type: 'mixing'}, function(err, newBridge) {
       if (err) {
